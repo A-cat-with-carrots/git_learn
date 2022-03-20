@@ -10,7 +10,7 @@ int searchSymbolTable(char *name)
 }
 
 // 首先根据name查符号表，不能重复定义 重复定义返回-1
-int fillSymbolTable(char *name, char *alias, int level, int type, char flag, int offset)
+int fillSymbolTable(char *name, char *alias, int level, int type, int flag)
 {
     int i;
     /*符号查重，考虑外部变量声明前有函数定义，

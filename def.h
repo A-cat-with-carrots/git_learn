@@ -102,8 +102,8 @@ struct node
         int type_int;     //由整常数生成的叶结点
     };
     struct node *ptr[3]; //子树指针，由kind确定有多少棵子树
-    int level; //层号
-    int place; //表示结点对应的变量或运算结果符号表的位置序号
+    int level;           //层号
+    int place;           //表示结点对应的变量或运算结果符号表的位置序号
 
     struct codenode *code; //该结点中间代码链表头指针
     int pos;               //语法单位所在位置行号
@@ -164,7 +164,7 @@ int fillast(char *name, int type, char flag); //用来处理临时符号表
 int fillSymbolTable(char *name, char *alias, int level, int type, int flag);
 int fillSymbolTable_(char *name, char *alias, int level, int type, char flag, int offset);
 void Exp(struct node *T);
-void boolExp(struct node *T);
+void boolExp(struct node *T, char *Etrue, char *Efalse);
 void semantic_Analysis(struct node *T);
 void DisplaySymbolTable(struct node *T);
 int temp_add(char *name, int level, int type, int flag);
@@ -182,6 +182,7 @@ void print_IR(struct codenode *head);
 
 void id_exp(struct node *T);
 void int_exp(struct node *T);
+void exp_array(struct node *T);
 void assignop_exp(struct node *T);
 void relop_exp(struct node *T);
 void args_exp(struct node *T);
@@ -190,15 +191,18 @@ void func_call_exp(struct node *T);
 void not_exp(struct node *T);
 
 void func_def(struct node *T);
-
 void param_list(struct node *T);
 void param_dec(struct node *T);
 void param_array(struct node *T);
 
-void var_def(struct node *T);
+void var_decl_list(struct node *T);
+
+void var_decl(struct node *T);
 void array_decl(struct node *T);
-int array_index(struct node *T, int i, int offset); //生成数组下标
-void else_if_stmt(struct node *T, char *Efalse);    // else if的情况且无else
+int array_index(struct node *T, int i, int offset);   //生成数组下标
+int exp_index(struct node *T, int index, int place); //处理数组引用的下标
+int mul_exp(struct node *T, char *i, int offset);    //生成乘法语句
+void else_if_stmt(struct node *T, char *Efalse);      // else if的情况且无else
 void if_else_stmt(struct node *T);
 void else_if_else_stmt(struct node *T, char *Enext);
 void if_stmt(struct node *T);
