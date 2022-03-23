@@ -1,15 +1,15 @@
-FUNCTION add :
-  PARAM var5
-  PARAM var6
-  temp1 := var5 + var6
-  var3 := temp1
-  RETURN
-FUNCTION main :
-  temp2 := #3
-  var5 := temp2
-  temp3 := #2
-  var6 := temp3
-  ARG var5
-  ARG var6
-  temp4 := CALL add
-  RETURN var3
+100: FUNCTION main :
+101:   temp1 := #0
+102:   var2 := temp1
+103:   temp2 := #3
+104:   var1 := temp2
+105:   temp3 := #0
+106:   IF var1 > temp3 GOTO 108
+107:   GOTO 114
+108:   temp4 := var2 + var1
+109:   var2 := temp4
+110:   temp5 := #1
+111:   temp6 := var1 - temp5
+112:   var1 := temp6
+113:   GOTO 105
+114:   RETURN var2

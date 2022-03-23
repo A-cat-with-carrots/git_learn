@@ -91,7 +91,7 @@ void print_IR(struct codenode *head)
     struct codenode *h = head;
     do
     {
-        // printf("%d: ",h->UID);
+        printf("%d: ", h->UID);
         if (h->opn1.kind == INT)
             sprintf(opnstr1, "#%d", h->opn1.const_int);
         if (h->opn1.kind == ID)
@@ -130,25 +130,25 @@ void print_IR(struct codenode *head)
             printf("LABEL %s :\n", h->result.id);
             break;
         case GOTO:
-            printf("  GOTO %s\n", h->result.id);
+            printf("  GOTO %d\n", h->result.const_int);
             break;
         case JLE:
-            printf("  IF %s <= %s GOTO %s\n", opnstr1, opnstr2, resultstr);
+            printf("  IF %s <= %s GOTO %d\n", opnstr1, opnstr2, h->result.const_int);
             break;
         case JLT:
-            printf("  IF %s < %s GOTO %s\n", opnstr1, opnstr2, resultstr);
+            printf("  IF %s < %s GOTO %d\n", opnstr1, opnstr2, h->result.const_int);
             break;
         case JGE:
-            printf("  IF %s >= %s GOTO %s\n", opnstr1, opnstr2, resultstr);
+            printf("  IF %s >= %s GOTO %d\n", opnstr1, opnstr2, h->result.const_int);
             break;
         case JGT:
-            printf("  IF %s > %s GOTO %s\n", opnstr1, opnstr2, resultstr);
+            printf("  IF %s > %s GOTO %d\n", opnstr1, opnstr2, h->result.const_int);
             break;
         case EQ:
-            printf("  IF %s == %s GOTO %s\n", opnstr1, opnstr2, resultstr);
+            printf("  IF %s == %s GOTO %d\n", opnstr1, opnstr2, h->result.const_int);
             break;
         case NEQ:
-            printf("  IF %s != %s GOTO %s\n", opnstr1, opnstr2, resultstr);
+            printf("  IF %s != %s GOTO %d\n", opnstr1, opnstr2, h->result.const_int);
             break;
         case ARG:
             printf("  ARG %s\n", h->result.id);
@@ -212,7 +212,10 @@ void DisplaySymbolTable(struct node *T)
     symbol_scope_TX.top = 1;
     // T->offset = 0; // 外部变量在数据区的偏移量
     semantic_Analysis(T);
+    make_uid(T->code);
+    change_label(T->code);
     print_IR(T->code);
+    // struct Block *block = divide_block(T->code);
 }
 
 //对抽象语法树的先根遍历,按display的控制结构修改完成符号表管理和语义检查和TAC生成（语句部分）
@@ -897,8 +900,10 @@ void block_list(struct node *T)
 void if_stmt(struct node *T)
 {
     //两个子节点，一个判断语句，一个代码块
-    char *Etrue = newLabel();
-    char *Efalse = newLabel();
+    char Etrue[20];
+    char Efalse[20];
+    strcpy(Etrue, newLabel());
+    strcpy(Efalse, newLabel());
     boolExp(T->ptr[0], Etrue, Efalse); //处理判断语句
     semantic_Analysis(T->ptr[1]);      //处理代码块
     T->code = merge(4, T->ptr[0]->code, genLabel(Etrue), T->ptr[1]->code, genLabel(Efalse));
@@ -906,9 +911,12 @@ void if_stmt(struct node *T)
 
 void if_else_stmt(struct node *T)
 {
-    char *Etrue = newLabel();
-    char *Efalse = newLabel();
-    char *Enext = newLabel();
+    char Etrue[20];
+    char Efalse[20];
+    char Enext[20];
+    strcpy(Etrue, newLabel());
+    strcpy(Efalse, newLabel());
+    strcpy(Enext, newLabel());
     boolExp(T->ptr[0], Etrue, Efalse); //处理if处判断，为false则跳else
     semantic_Analysis(T->ptr[1]);      // if的代码块
     if (T->ptr[2]->kind == IF_THEN)    //遇到else if情况传递Enext
@@ -922,15 +930,18 @@ void if_else_stmt(struct node *T)
 void else_if_stmt(struct node *T, char *Efalse) // else if的情况且无else
 {
     //两个子节点，一个判断语句，一个代码块
-    char *Etrue = newLabel();
+    char Etrue[20];
+    strcpy(Etrue, newLabel());
     boolExp(T->ptr[0], Etrue, Efalse); //处理判断语句
     semantic_Analysis(T->ptr[1]);      //处理代码块
     T->code = merge(4, T->ptr[0]->code, genLabel(Etrue), T->ptr[1]->code, Efalse);
 }
 void else_if_else_stmt(struct node *T, char *Enext) // else if else情况跟if else情况相同但是Enext由上级传递
 {
-    char *Etrue = newLabel();
-    char *Efalse = newLabel();
+    char Etrue[20];
+    char Efalse[20];
+    strcpy(Etrue, newLabel());
+    strcpy(Efalse, newLabel());
 
     boolExp(T->ptr[0], Etrue, Efalse); //处理if处判断，为false则跳else
 
@@ -948,9 +959,12 @@ void else_if_else_stmt(struct node *T, char *Enext) // else if else情况跟if e
 
 void while_stmt(struct node *T)
 {
-    char *Etrue = newLabel();
-    char *Efalse = newLabel();
-    char *Enext = newLabel();
+    char Etrue[20];
+    char Efalse[20];
+    char Enext[20];
+    strcpy(Etrue, newLabel());
+    strcpy(Efalse, newLabel());
+    strcpy(Enext, newLabel());
 
     boolExp(T->ptr[0], Etrue, Efalse);
 
@@ -1049,7 +1063,7 @@ void change_label(struct codenode *head)
                 {
                     if (!strcmp(temp->result.id, hcode->result.id))
                     {
-                        sprintf(hcode->result.id, "%d", temp->UID);
+                        sprintf(hcode->result.id, "%d", temp->UID - '0');
                         hcode->result.const_int = temp->UID;
                         break;
                     }
