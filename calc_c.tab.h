@@ -90,7 +90,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 12 "calc_c.y"
+#line 13 "calc_c.y"
 
     int         type_int;
     struct node * ptr;

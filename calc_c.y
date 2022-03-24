@@ -4,6 +4,7 @@
     #include <stdio.h>
     #include <math.h>
     extern int yylineno;
+    extern FILE *yyin;
     extern char *yytext;
     int yylex(void);
     void yyerror(char* s, ...);
@@ -204,11 +205,7 @@ constexp: addexp                                {$$ = $1;}
         ;
 
 %%
-int main(){
-	yylineno=1;
-	yyparse();
-	return 0;
-	}
+
 
 #include<stdarg.h>
 void yyerror(char* s, ...)

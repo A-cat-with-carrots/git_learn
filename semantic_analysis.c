@@ -969,8 +969,13 @@ void while_stmt(struct node *T)
     boolExp(T->ptr[0], Etrue, Efalse);
 
     semantic_Analysis(T->ptr[1]); //处理循环体
-
-    T->code = merge(6, genLabel(Enext), T->ptr[0]->code, genLabel(Etrue), T->ptr[1]->code, genGoto(Enext), genLabel(Efalse)); //合并代码
+    struct codenode *Enext_label = genLabel(Enext);
+    struct codenode*if_code = T->ptr[0]->code->prior->prior;
+    if_code->prior->next = Enext_label;
+    Enext_label->prior = if_code->prior;
+    Enext_label->next = if_code;
+    if_code->prior = Enext_label;
+    T->code = merge(5,  T->ptr[0]->code, genLabel(Etrue), T->ptr[1]->code, genGoto(Enext), genLabel(Efalse)); //合并代码
     //开始回填
     struct codenode *h = T->code;
     do

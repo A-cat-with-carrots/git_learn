@@ -44,7 +44,7 @@ struct Block *divide_block(struct codenode *head)
     hcode = head;
     while (hcode)
     {
-        if (hcode->out)
+        if (hcode->out)//
         {
             struct Block *temp = newblock();
             temp->id = id++;
