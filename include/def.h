@@ -3,6 +3,7 @@
 #include "string.h"
 #include "stdarg.h"
 #include "calc_c.tab.h"
+#include "block.h"
 enum node_kind
 {
     VAR_DECL,
@@ -66,7 +67,8 @@ enum node_kind
     JGE,
     EQ,
     NEQ,
-    NONE
+    NONE,
+    END
 };
 
 #define MAXLENGTH 1000     //定义符号表的大小
@@ -140,19 +142,7 @@ struct symbol_scope_begin
     int TX[30];
     int top;
 } symbol_scope_TX;
-//基本块
-struct Blocks
-{
-    struct Block *block[100];
-    int index;
-} blocks;
-struct Block
-{
-    int id;
-    struct codenode *tac_list; //中间代码集合
-    int num_children;          //统计孩子结点个数
-    struct Block *children[2];
-};
+
 /*generate AST*/
 struct node *mknode(int kind, struct node *first, struct node *second, struct node *third, int pos);
 struct node *mkarrnode(int kind, struct node *first, int length, int pos);
@@ -199,10 +189,10 @@ void var_decl_list(struct node *T);
 
 void var_decl(struct node *T);
 void array_decl(struct node *T);
-int array_index(struct node *T, int i, int offset);   //生成数组下标
+int array_index(struct node *T, int i, int offset);  //生成数组下标
 int exp_index(struct node *T, int index, int place); //处理数组引用的下标
 int mul_exp(struct node *T, char *i, int offset);    //生成乘法语句
-void else_if_stmt(struct node *T, char *Efalse);      // else if的情况且无else
+void else_if_stmt(struct node *T, char *Efalse);     // else if的情况且无else
 void if_else_stmt(struct node *T);
 void else_if_else_stmt(struct node *T, char *Enext);
 void if_stmt(struct node *T);
@@ -225,9 +215,6 @@ void block(struct node *T);
 void block_list(struct node *T);
 int match_param(int i, struct node *T);
 
-struct Block *divide_block(struct codenode *head);
-struct Block *newblock();
-struct Block *merge_block(struct Block *head, struct Block *newnode);
 
 void make_uid(struct codenode *head);
 void change_label(struct codenode *head);

@@ -1,6 +1,6 @@
 %{
     #include<stdlib.h>
-    #include "def.h"
+    #include "include/def.h"
     #include <stdio.h>
     #include <math.h>
     extern int yylineno;
@@ -60,10 +60,6 @@ constdecl: TOK_CONST TOK_INT constdef constdecl_ TOK_SEMICOLON  {$3->type = CONS
 constdecl_: TOK_COMMA constdef constdecl_       {$2->type=CONST_INT;$2->kind = VAR_DEF;$$ = mknode(VAR_DECL_LIST,$2,$3,NULL,yylineno);} 
           |                                     {$$ = NULL;}
           ;
-// constdef: IDENT                                         {$$ = mknode(ID,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);} //ID结点，标识符符号串存放结点的type_id
-//         | constdef TOK_LSQUARE INTCONST TOK_RSQUARE     { $$ = mkarrnode(ARRAY_DEC,$1,$3,yylineno);}
-//         | constdef TOK_ASSIGN constinitval              {$$=mknode(TOK_ASSIGN,$1,$3,NULL,yylineno);}
-//         ;
 constdef: IDENT constdef_ TOK_ASSIGN constinitval          {struct node *temp;if($2 == NULL){temp =mknode(ID,NULL,NULL,NULL,yylineno);strcpy(temp->type_id,$1);}
                                                              else{temp = mkparray(ARRAY_DEC,$1,$2,yylineno);temp->type = TOK_INT;strcpy(temp->type_id,$1);}
                                                              temp->ptr[0]=$4;$$ = temp;}

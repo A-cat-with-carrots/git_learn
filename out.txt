@@ -1,0 +1,8 @@
+100: FUNCTION main :
+101:   temp1 := #10
+102:   var1 := temp1
+103:   temp2 := #10
+104:   var4 := temp2
+105:   temp3 := #0
+106:   RETURN temp3
+107: END
