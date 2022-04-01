@@ -4,6 +4,8 @@
 #include "stdarg.h"
 #include "calc_c.tab.h"
 #include "block.h"
+#include "liveness.h"
+#include "reg.h"
 enum node_kind
 {
     VAR_DECL,

@@ -22,6 +22,7 @@ void DisplaySymbolTable(struct node *T)
     change_label(T->code);
     print_IR(T->code);
     basic_block(T->code);
+    all_fun_reg(current_block);
     printf("ending\n");
     // struct Block *block = divide_block(T->code);
 }

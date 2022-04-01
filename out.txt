@@ -1,8 +1,65 @@
-100: FUNCTION main :
-101:   temp1 := #10
-102:   var1 := temp1
-103:   temp2 := #10
-104:   var4 := temp2
-105:   temp3 := #0
-106:   RETURN temp3
-107: END
+100: FUNCTION fun :
+101:   temp1 := #0
+102:   var2 := temp1
+103: END
+104: FUNCTION main :
+105:   temp2 := #10
+106:   var4 := temp2
+107:   temp3 := CALL fun
+108:   temp4 := #0
+109:   IF var4 > temp4 GOTO 111
+110:   GOTO 119
+111:   temp5 := #5
+112:   IF var4 > temp5 GOTO 114
+113:   GOTO 117
+114:   temp6 := #1
+115:   temp7 := var4 - temp6
+116:   var4 := temp7
+117:   RETURN var4
+118:   GOTO 108
+119:   RETURN var4
+120: END
+
+FUNCTION fun:
+Block0:
+	USE		
+	DEF		temp1	var2	
+	IN		
+	OUT		
+Register Assignment:
+
+FUNCTION main:
+Block0:
+	USE		
+	DEF		temp2	var4	temp3	
+	IN		
+	OUT		var4	
+Block1:
+	USE		var4	
+	DEF		temp4	
+	IN		var4	
+	OUT		var4	
+Block2:
+	USE		var4	
+	DEF		temp5	
+	IN		var4	
+	OUT		var4	
+Block3:
+	USE		var4	
+	DEF		temp6	temp7	
+	IN		var4	
+	OUT		var4	
+Block4:
+	USE		var4	
+	DEF		
+	IN		var4	
+	OUT		var4	
+Block5:
+	USE		var4	
+	DEF		
+	IN		var4	
+	OUT		
+Register Assignment:
+	var4	R0
+
+ending

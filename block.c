@@ -10,7 +10,7 @@ Block *newblock() //创建新块
 void newBlocks(char *name)
 {
     Blocks *temp = (Blocks *)malloc(sizeof(Blocks));
-    strcpy(temp->name,name);
+    strcpy(temp->name, name);
     temp->count = 0;
     temp->next = temp->pre = NULL;
     if (current_block == NULL)
@@ -81,8 +81,11 @@ void divide_block(struct codenode *head)
 }
 void merge_block(Block *fa, Block *ch)
 {
-    fa->children[fa->num_children] = ch;
-    fa->num_children++;
+    if (ch != NULL)
+    {
+        fa->children[fa->num_children] = ch;
+        fa->num_children++;
+    }
 }
 Block *find_target(int target)
 {
