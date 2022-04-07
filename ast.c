@@ -14,11 +14,11 @@ struct node *mkparray(int kind, char *name, struct node *len, int pos)
     struct node *temp = (struct node *)malloc(sizeof(struct node));
     temp->kind = kind;
     strcpy(temp->type_id, name);
-    int rtn = fillast(name, TOK_INT, kind);
+    int rtn = fillast(name, kind);
     temp->place = rtn;
     temp->pos = pos;
     astsymbol.symbols[rtn].array_dimension = 0;
-    memset(astsymbol.symbols[rtn].length,0,sizeof(astsymbol.symbols[rtn].length));
+    memset(astsymbol.symbols[rtn].length, 0, sizeof(astsymbol.symbols[rtn].length));
     if (kind == PARAM_ARRAY)
     {
         astsymbol.symbols[rtn].length[0] = 0;
@@ -33,6 +33,37 @@ struct node *mkparray(int kind, char *name, struct node *len, int pos)
     }
     return temp;
 }
+int const_exp(struct node *T)
+{
+    int left = 0, right = 0;
+    if (T == NULL)
+        return 0;
+    if (T->kind == INT)
+        return T->type_int;
+    left = const_exp(T->ptr[0]);
+    right = const_exp(T->ptr[1]);
+    switch (T->kind)
+    {
+    case TOK_ADD:
+        return left + right;
+        break;
+    case TOK_SUB:
+        return left - right;
+        break;
+    case TOK_MUL:
+        return left * right;
+        break;
+    case TOK_DIV:
+        return left / right;
+        break;
+    case TOK_MODULO:
+        return left % right;
+        break;
+    default:
+        break;
+    }
+}
+
 //对抽象语法树的先根遍历
 // void display(struct node *T, int indent)
 // {

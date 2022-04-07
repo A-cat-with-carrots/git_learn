@@ -149,10 +149,11 @@ struct symbol_scope_begin
 struct node *mknode(int kind, struct node *first, struct node *second, struct node *third, int pos);
 struct node *mkarrnode(int kind, struct node *first, int length, int pos);
 struct node *mkparray(int kind, char *first, struct node *len, int pos);
+int const_exp(struct node *T);
 /*semantic analysis*/
 void semantic_error(int line, char *msg1, char *msg2);
 int searchSymbolTable(char *name);
-int fillast(char *name, int type, char flag); //用来处理临时符号表
+int fillast(char *name, char flag); //用来处理临时符号表
 int fillSymbolTable(char *name, char *alias, int level, int type, int flag);
 int fillSymbolTable_(char *name, char *alias, int level, int type, char flag, int offset);
 void Exp(struct node *T);
@@ -216,7 +217,6 @@ void unaryexp(struct node *T);
 void block(struct node *T);
 void block_list(struct node *T);
 int match_param(int i, struct node *T);
-
 
 void make_uid(struct codenode *head);
 void change_label(struct codenode *head);

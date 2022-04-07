@@ -1,16 +1,15 @@
-void fun()
-{
-    int i = 0;
+int ifElse() {
+  int a;
+  a = 5;
+  if (a == 5) {
+    a = 25;
+  } else {
+    a = a * 2;
+  }
+  return (a);
 }
-int main(){
-    int a=10;
-    fun();
-    while(a>0){
-        if(a>5){
-            a=a-1;
-            continue;
-        }
-        return a;
-    }
-    return a;
+
+
+int main() {
+  return (ifElse());
 }

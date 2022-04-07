@@ -11,7 +11,7 @@ int searchSymbolTable(char *name)
             {
                 for (i = i - 1; i >= 0; i--)
                 {
-                    if (symbolTable.symbols[i].flag == FUNCTION)//跳出上个函数的形参
+                    if (symbolTable.symbols[i].flag == FUNCTION) //跳出上个函数的形参
                         break;
                 }
             }
@@ -21,7 +21,6 @@ int searchSymbolTable(char *name)
     }
     return -1;
 }
-
 
 // 首先根据name查符号表，不能重复定义 重复定义返回-1
 int fillSymbolTable(char *name, char *alias, int level, int type, int flag)
@@ -45,11 +44,10 @@ int fillSymbolTable(char *name, char *alias, int level, int type, int flag)
     return symbolTable.index++; //返回的是符号在符号表中的位置序号，中间代码生成时可用序号取到符号别名
 }
 // 首先根据name查符号表，不能重复定义 重复定义返回-1
-int fillast(char *name, int type, char flag)
+int fillast(char *name, char flag)
 {
     //填写符号表内容
     strcpy(astsymbol.symbols[astsymbol.index].name, name);
-    astsymbol.symbols[astsymbol.index].type = type;
     astsymbol.symbols[astsymbol.index].flag = flag;
     return astsymbol.index++; //返回的是符号在符号表中的位置序号，中间代码生成时可用序号取到符号别名
 }
