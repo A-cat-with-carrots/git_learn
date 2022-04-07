@@ -153,6 +153,7 @@ int const_exp(struct node *T);
 /*semantic analysis*/
 void semantic_error(int line, char *msg1, char *msg2);
 int searchSymbolTable(char *name);
+int search_alias(char *alias);
 int fillast(char *name, char flag); //用来处理临时符号表
 int fillSymbolTable(char *name, char *alias, int level, int type, int flag);
 int fillSymbolTable_(char *name, char *alias, int level, int type, char flag, int offset);

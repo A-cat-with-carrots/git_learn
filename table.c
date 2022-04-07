@@ -21,7 +21,18 @@ int searchSymbolTable(char *name)
     }
     return -1;
 }
-
+int search_alias(char *alias)
+{
+    int i;
+    for (i = symbolTable.index - 1; i >= 0; i--)
+    {
+        if (strcmp(symbolTable.symbols[i].alias, alias) == 0)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
 // 首先根据name查符号表，不能重复定义 重复定义返回-1
 int fillSymbolTable(char *name, char *alias, int level, int type, int flag)
 {
